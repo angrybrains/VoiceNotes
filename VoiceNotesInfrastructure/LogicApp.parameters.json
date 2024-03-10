@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "value": "voicenote03"
+    },
+    "subscriptionId": {"value": ""},
+    "sites_openaihelper1108_externalid": {
+      "value": null
+    },
+    "connections_onedrive_externalid": {
+      "value": null
+    },
+    "connections_azureblob_externalid": {
+      "value": null
+    },
+    "connections_keyvault_externalid": {
+      "value": null
+    }
+  }
+}

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34302.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "VoiceNotesInfrastructure", "VoiceNotesInfrastructure.deployproj", "{B2ADFB3D-87D6-4DB7-B816-98F315954E88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoiceNotesFunctions", "..\VoiceNotesFunctions\VoiceNotesFunctions.csproj", "{770F04C6-D018-4106-AFF6-134E99B4A09A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2ADFB3D-87D6-4DB7-B816-98F315954E88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2ADFB3D-87D6-4DB7-B816-98F315954E88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2ADFB3D-87D6-4DB7-B816-98F315954E88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2ADFB3D-87D6-4DB7-B816-98F315954E88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{770F04C6-D018-4106-AFF6-134E99B4A09A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{770F04C6-D018-4106-AFF6-134E99B4A09A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{770F04C6-D018-4106-AFF6-134E99B4A09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{770F04C6-D018-4106-AFF6-134E99B4A09A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BBF09A6A-BC90-4A59-9D06-D1FE4BDA4467}
+	EndGlobalSection
+EndGlobal

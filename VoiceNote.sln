@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoiceNotesFunctions", "VoiceNotesFunctions\VoiceNotesFunctions.csproj", "{7C5C2931-928A-4A83-93BB-3634C1C86DDB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C5C2931-928A-4A83-93BB-3634C1C86DDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5C2931-928A-4A83-93BB-3634C1C86DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5C2931-928A-4A83-93BB-3634C1C86DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C5C2931-928A-4A83-93BB-3634C1C86DDB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1D6E8191-1F9D-48D4-8393-4C00EDAD8DA9}
+	EndGlobalSection
+EndGlobal
