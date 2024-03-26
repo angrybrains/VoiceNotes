@@ -1,35 +1,89 @@
 using System;
 using System.IO;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using OpenAiHelper.Models;
 
-namespace VoiceNotesFunctions.Functions
+namespace OpenAiHelper
 {
-    public static class WritePoemFromSummary
+    //Experimental function: Creating a poem based on the transcribed text
+    public class WritePoemFromSummary
     {
-        [FunctionName("WritePoemFromSummary")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        private readonly ILogger<GetChatCompletion> _logger;
+
+        public WritePoemFromSummary(ILogger<GetChatCompletion> log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            _logger = log;
+        }
 
-            string name = req.Query["name"];
+        [FunctionName("WritePoemFromSummary")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "chat-completion" })]
+        [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(string), Description = "The OK response")]
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
+        {
+            _logger.LogInformation("Entering GetChatCompletion v.23.1225");
+            string requestBody;
+            try
+            {
+                requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var data = JsonConvert.DeserializeObject<GetChatCompletionRequestBody>(requestBody);
+                if (data != null)
+                {
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri("https://api.openai.com/v1/");
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", data.ApiKey);
+                        //client.DefaultRequestHeaders.Add("Content-Type", "application/json");
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+                        ChatCompletionApiRequestModel chatCompletionRequest = new ChatCompletionApiRequestModel();
+                        chatCompletionRequest.Model = "gpt-3.5-turbo";
+                        chatCompletionRequest.AddMessage(new Gpt35Model { Role = "system", Content = "You are a helpful assistant" });
+                        chatCompletionRequest.AddMessage(new Gpt35Model { Role = "user", Content = "Generate a Shakespearian poem based on the following text:" });
+                        chatCompletionRequest.AddMessage(new Gpt35Model { Role = "user", Content = data.Text });
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+                        string json = JsonConvert.SerializeObject(chatCompletionRequest);
+                        using var content = new StringContent(json);
+                        //using var content = new StringContent(JsonConvert.SerializeObject(chatCompletionRequest));
+                        var response = await client.PostAsync("chat/completions", content);
 
-            return new OkObjectResult(responseMessage);
+                        var result = JObject.Parse(await response.Content.ReadAsStringAsync());
+                        string resultJson = result.ToString();
+                        Console.WriteLine(resultJson);
+                        _logger.LogInformation(resultJson);
+
+                        var chatCompletionResponse = JsonConvert.DeserializeObject<ChatCompletionApiResponseBody>(resultJson);
+                        OkObjectResult returnResponse = new OkObjectResult(chatCompletionResponse.GetBestChoice());
+                        //returnResponse.ContentTypes.Add("application/json");
+                        return returnResponse;
+                    }
+                }
+                else
+                {
+                    string err = "request does not conform to schema";
+                    _logger.LogWarning(err);
+                    return new BadRequestObjectResult(err);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                _logger.LogError(ex.Message);
+                return new BadRequestObjectResult(ex.Message);
+            }
         }
     }
 }
