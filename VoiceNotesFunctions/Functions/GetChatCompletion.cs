@@ -55,8 +55,8 @@ namespace OpenAiHelper
                         ChatCompletionApiRequestModel chatCompletionRequest = new ChatCompletionApiRequestModel();
                         chatCompletionRequest.Model = "gpt-3.5-turbo";
                         chatCompletionRequest.AddMessage(new Gpt35Model { Role = "system", Content = "You are a helpful assistant" });
-                        chatCompletionRequest.AddMessage(new Gpt35Model { Role = "user", Content = "summarize the following text:" });
-                        chatCompletionRequest.AddMessage(new Gpt35Model { Role = "system", Content = "summarize the text in bullets. Be as descriptive as possible" });
+                        chatCompletionRequest.AddMessage(new Gpt35Model { Role = "system", Content = "Summarize the text in bullets. Be as descriptive as possible without exceeding 1000 words" });
+                        chatCompletionRequest.AddMessage(new Gpt35Model { Role = "user", Content = "Summarize the following text:" });
                         chatCompletionRequest.AddMessage(new Gpt35Model { Role = "user", Content = data.Text });
 
                         string json = JsonConvert.SerializeObject(chatCompletionRequest);
